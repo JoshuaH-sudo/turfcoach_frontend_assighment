@@ -50,20 +50,26 @@ export default function Home() {
   if (!loading && weatherData) {
     content = (
       <div className={styles.weatherDisplay}>
-        <span>
-          <label>Lat</label>
-          <p>{weatherData.coord.lat}</p>
-        </span>
+        <div id="info">
+          <span>
+            <label>Lat</label>
+            <p>{weatherData.coord.lat}</p>
+          </span>
 
-        <span>
-          <label>Lon</label>
-          <p>{weatherData.coord.lon}</p>
-        </span>
+          <span>
+            <label>Lon</label>
+            <p>{weatherData.coord.lon}</p>
+          </span>
 
-        <span>
-          <label>Temperature</label>
-          <p>{weatherData.main.temp}</p>
-        </span>
+          <span>
+            <label>Temperature</label>
+            <p>{weatherData.main.temp}</p>
+          </span>
+        </div>
+
+        <div id="map">
+          
+        </div>
       </div>
     );
   }
