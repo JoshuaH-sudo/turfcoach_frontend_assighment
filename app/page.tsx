@@ -17,7 +17,17 @@ export default function Home() {
     const formData = new FormData(event.currentTarget);
     const city = formData.get("city");
 
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
+    if (!city) {
+      setError("Please provide a city name");
+      return;
+    }
+
+    const weather_api = new URL("https://api.openweathermap.org/data/2.5/weather");
+    weather_api.searchParams.append("q", city.toString());
+    weather_api.searchParams.append("appid", apiKey);
+    weather_api.searchParams.append("units", "metrics");
+
+    const response = await fetch(weather_api.toString());
 
     const data = await response.json();
     setWeatherData({ ...data });
@@ -39,10 +49,21 @@ export default function Home() {
   }
   if (!loading && weatherData) {
     content = (
-      <div>
-        <p>{weatherData.coord.lat}</p>
-        <p>{weatherData.coord.lon}</p>
-        <p>{weatherData.main.temp}</p>
+      <div className={styles.weatherDisplay}>
+        <span>
+          <label>Lat</label>
+          <p>{weatherData.coord.lat}</p>
+        </span>
+
+        <span>
+          <label>Lon</label>
+          <p>{weatherData.coord.lon}</p>
+        </span>
+
+        <span>
+          <label>Temperature</label>
+          <p>{weatherData.main.temp}</p>
+        </span>
       </div>
     );
   }
@@ -54,7 +75,7 @@ export default function Home() {
         <input id="cityInput" name="city" placeholder="Enter City" />
         <button type="submit">Enter</button>
       </form>
-      <div>{content}</div>
+      {content}
     </main>
   );
 }
